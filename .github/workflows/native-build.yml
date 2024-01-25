@@ -87,7 +87,7 @@ jobs:
           key: ${{ matrix.build_target }}-${{ hashFiles('.git/modules/submodules/*/refs/heads/*') }}
         
       - name: Get ARM64 toolchain
-        if: ${{ steps.cache-native-libraries.outputs.cache-hit == 'ttttrue' && matrix.build_target == 'linux-arm64' }}
+        if: ${{ matrix.build_target == 'linux-arm64' }}
         run: |
              sudo apt-get update
              sudo apt-get install gcc-aarch64-linux-gnu
@@ -95,7 +95,6 @@ jobs:
         shell: bash
         
       - name: Build native libraries
-        if: steps.cache-native-libraries.outputs.cache-hit == 'ttttrue'
         env:
           MODULE_ARGS_1: --submodule Remotery --build-type Release
           CMAKE_ARGS_1: -DREMOTERY_BUILD_SHARED_LIBS=ON
