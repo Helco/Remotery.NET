@@ -96,7 +96,7 @@ jobs:
         
       - name: Build native libraries
         env:
-          MODULE_ARGS_1: --submodule Remotery --build-type Release
+          MODULE_ARGS_1: --submodule remotery --build-type Release
           CMAKE_ARGS_1: -DREMOTERY_BUILD_SHARED_LIBS=ON
           
         run:  |
