@@ -47,22 +47,22 @@ jobs:
           - os: ubuntu-latest
             build_target: linux-x64
             args: --artifact-name build/remotery/libremotery.so
-            cmake_args: $CMAKE_ARGS_1_LINUX
+            cmake_args: $CMAKE_ARGS_1
             
           - os: ubuntu-latest
             build_target: linux-arm64
             args: --linux aarch64 --artifact-name build/remotery/libremotery.so
-            cmake_args: $CMAKE_ARGS_1_LINUX
+            cmake_args: $CMAKE_ARGS_1
             
           - os: macos-latest
             build_target: osx-x64
             args: --osx x86_64 --artifact-name build/remotery/libremotery.dylib
-            cmake_args: $CMAKE_ARGS_1_LINUX
+            cmake_args: $CMAKE_ARGS_1
 
           - os: macos-latest
             build_target: osx-arm64
             args: --osx arm64 --artifact-name build/remotery/libremotery.dylib
-            cmake_args: $CMAKE_ARGS_1_LINUX
+            cmake_args: $CMAKE_ARGS_1
             
           - os: macos-latest
             build_target: ios-arm64
@@ -97,8 +97,7 @@ jobs:
       - name: Build native libraries
         env:
           MODULE_ARGS_1: --submodule remotery --build-type Release
-          CMAKE_ARGS_1_LINUX: "-DREMOTERY_BUILD_SHARED_LIBS=ON"
-          CMAKE_ARGS_1: "-DREMOTERY_BUILD_SHARED_LIBS^=ON"
+          CMAKE_ARGS_1: -DREMOTERY_BUILD_SHARED_LIBS=ON
           
         run:  |
               mkdir -p $OUT_DIR
