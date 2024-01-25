@@ -86,14 +86,8 @@ jobs:
           path: ${{ env.OUT_DIR }}/
           key: ${{ matrix.build_target }}-${{ hashFiles('.git/modules/submodules/*/refs/heads/*') }}
         
-      - name: Sync Third Party
-        if: steps.cache-native-libraries.outputs.cache-hit != 'true'
-        working-directory: submodules/shaderc
-        run: ./utils/git-sync-deps
-        shell: bash
-        
       - name: Get ARM64 toolchain
-        if: ${{ steps.cache-native-libraries.outputs.cache-hit != 'true' && matrix.build_target == 'linux-arm64' }}
+        if: ${{ steps.cache-native-libraries.outputs.cache-hit == 'ttttrue' && matrix.build_target == 'linux-arm64' }}
         run: |
              sudo apt-get update
              sudo apt-get install gcc-aarch64-linux-gnu
@@ -101,7 +95,7 @@ jobs:
         shell: bash
         
       - name: Build native libraries
-        if: steps.cache-native-libraries.outputs.cache-hit != 'true'
+        if: steps.cache-native-libraries.outputs.cache-hit == 'ttttrue'
         env:
           MODULE_ARGS_1: --submodule Remotery --build-type Release
           CMAKE_ARGS_1: -DREMOTERY_BUILD_SHARED_LIBS=ON
