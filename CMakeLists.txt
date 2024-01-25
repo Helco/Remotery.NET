@@ -12,9 +12,9 @@ endif()
 
 # Build options
 # =============
-#
-#option(REMOTERY_BUILD_SHARED_LIBS "Build remotery shared library" OFF)
-#option(REMOTERY_BUILD_STATIC_LIBS "Build remotery static library" OFF)
+
+option(REMOTERY_BUILD_SHARED_LIBS "Build remotery shared library" OFF)
+option(REMOTERY_BUILD_STATIC_LIBS "Build remotery static library" OFF)
 
 message(STATUS "Build shared libraries: ${REMOTERY_BUILD_SHARED_LIBS}")
 message(STATUS "Build static libraries: ${REMOTERY_BUILD_STATIC_LIBS}")
