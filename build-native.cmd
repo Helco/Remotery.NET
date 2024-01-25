@@ -45,6 +45,7 @@ If NOT exist "%_BUILD_DIR%" (
   mkdir %_BUILD_DIR%
 )
 pushd %_BUILD_DIR%
+echo ..\..\ -DCMAKE_BUILD_TYPE=%_CMAKE_BUILD_TYPE% %_CMAKE_ARGS% %_CMAKE_PLATFORM_ARGS% 
 cmake ..\..\ -DCMAKE_BUILD_TYPE=%_CMAKE_BUILD_TYPE% %_CMAKE_ARGS% %_CMAKE_PLATFORM_ARGS% 
 cmake --build . --config %_CMAKE_BUILD_TYPE%
 popd
