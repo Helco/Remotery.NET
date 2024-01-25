@@ -16,17 +16,17 @@ jobs:
         include:
           - os: windows-latest
             build_target: win-x64
-            args:     win-x64 --artifact-name build/remotery/remotery.dll
+            args:     win-x64 --artifact-name build/remotery/Release/remotery.dll
             cmake_args: $CMAKE_ARGS_1
             
           - os: windows-latest
             build_target: win-x86
-            args:     win-x86 --artifact-name build/remotery/remotery.dll
+            args:     win-x86 --artifact-name build/remotery/Release/remotery.dll
             cmake_args: $CMAKE_ARGS_1
             
           - os: windows-latest
             build_target: win-arm64
-            args: win-arm64 --artifact-name build/remotery/remotery.dll
+            args: win-arm64 --artifact-name build/remotery/Release/remotery.dll
             cmake_args: $CMAKE_ARGS_1
             
           - os: windows-latest
@@ -34,10 +34,10 @@ jobs:
             args: --android-abi arm64-v8a --artifact-name build/remotery/libremotery.so  --android-ndk '%ANDROID_NDK_HOME%' 
             cmake_args: $CMAKE_ARGS_1
             
-          - os: windows-latest 
-            build_target: android-armeabi-v7a
-            args: --android-abi armeabi-v7a --artifact-name build/remotery/libremotery.so  --android-ndk '%ANDROID_NDK_HOME%'
-            cmake_args: $CMAKE_ARGS_1
+          #- os: windows-latest 
+          #  build_target: android-armeabi-v7a
+          #  args: --android-abi armeabi-v7a --artifact-name build/remotery/libremotery.so  --android-ndk '%ANDROID_NDK_HOME%'
+          #  cmake_args: $CMAKE_ARGS_1
             
           - os: windows-latest
             build_target: android-x86_64
@@ -109,7 +109,7 @@ jobs:
         shell: bash
         
       - name: List $RUNNER_WORKSPACE
-        if: always()
+        if: false
         run: find $RUNNER_WORKSPACE
         shell: bash
 
