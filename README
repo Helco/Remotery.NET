@@ -1,0 +1,6 @@
+# Remotery.NET
+
+This is a .NET bindings library for the Remotery profiler. 
+
+Most of the bindings infrastructure was copied from the great Spirzza
+The CMake setup is based on the Remotery#245

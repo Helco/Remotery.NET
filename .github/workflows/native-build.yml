@@ -1,0 +1,177 @@
+name: Native build
+on:
+  create: # when tags are created
+  workflow_dispatch: # clickable button in CI manager
+env:
+  OUT_DIR: artifacts/natives
+
+jobs:
+  native_builds:
+    runs-on: ${{ matrix.os }}
+    name: ${{ matrix.build_target }} build
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            build_target: win-x64
+            args:     win-x64 --artifact-name build/remotery/remotery.dll
+            cmake_args: $CMAKE_ARGS_1
+            
+          - os: windows-latest
+            build_target: win-x86
+            args:     win-x86 --artifact-name build/remotery/remotery.dll
+            cmake_args: $CMAKE_ARGS_1
+            
+          - os: windows-latest
+            build_target: win-arm64
+            args: win-arm64 --artifact-name build/remotery/remotery.dll
+            cmake_args: $CMAKE_ARGS_1
+            
+          - os: windows-latest
+            build_target: android-arm64-v8a
+            args: --android-abi arm64-v8a --artifact-name build/remotery/libremotery.so  --android-ndk '%ANDROID_NDK_HOME%' 
+            cmake_args: $CMAKE_ARGS_1
+            
+          - os: windows-latest 
+            build_target: android-armeabi-v7a
+            args: --android-abi armeabi-v7a --artifact-name build/remotery/libremotery.so  --android-ndk '%ANDROID_NDK_HOME%'
+            cmake_args: $CMAKE_ARGS_1
+            
+          - os: windows-latest
+            build_target: android-x86_64
+            args: --android-abi x86_64 --artifact-name build/remotery/libremotery.so  --android-ndk '%ANDROID_NDK_HOME%'
+            cmake_args: $CMAKE_ARGS_1
+            
+          - os: ubuntu-latest
+            build_target: linux-x64
+            args: --artifact-name build/remotery/libremotery.so
+            cmake_args: $CMAKE_ARGS_1
+            
+          - os: ubuntu-latest
+            build_target: linux-arm64
+            args: --linux aarch64 --artifact-name build/remotery/libremotery.so
+            cmake_args: $CMAKE_ARGS_1
+            
+          - os: macos-latest
+            build_target: osx-x64
+            args: --osx x86_64 --artifact-name build/remotery/libremotery.dylib
+            cmake_args: $CMAKE_ARGS_1
+
+          - os: macos-latest
+            build_target: osx-arm64
+            args: --osx arm64 --artifact-name build/remotery/libremotery.dylib
+            cmake_args: $CMAKE_ARGS_1
+            
+          - os: macos-latest
+            build_target: ios-arm64
+            args: --ios OS64 --artifact-name build/remotery/Release-iphoneos/libremotery.a    --combined-static build/remotery/Release-iphoneos
+            cmake_args: -DREMOTERY_BUILD_STATIC_LIBS=ON
+            
+          - os: macos-latest
+            build_target: iossimulator-x64
+            args: --ios SIMULATOR64 --artifact-name build/remotery/libremotery.a    --combined-static build/remotery/Release-iphonesimulator
+            cmake_args: -DREMOTERY_BUILD_STATIC_LIBS=ON
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          
+      - name: Cache native libraries
+        uses: actions/cache@v3
+        id: cache-native-libraries
+        with:
+          path: ${{ env.OUT_DIR }}/
+          key: ${{ matrix.build_target }}-${{ hashFiles('.git/modules/submodules/*/refs/heads/*') }}
+        
+      - name: Sync Third Party
+        if: steps.cache-native-libraries.outputs.cache-hit != 'true'
+        working-directory: submodules/shaderc
+        run: ./utils/git-sync-deps
+        shell: bash
+        
+      - name: Get ARM64 toolchain
+        if: ${{ steps.cache-native-libraries.outputs.cache-hit != 'true' && matrix.build_target == 'linux-arm64' }}
+        run: |
+             sudo apt-get update
+             sudo apt-get install gcc-aarch64-linux-gnu
+             sudo apt install g++-aarch64-linux-gnu
+        shell: bash
+        
+      - name: Build native libraries
+        if: steps.cache-native-libraries.outputs.cache-hit != 'true'
+        env:
+          MODULE_ARGS_1: --submodule Remotery --build-type Release
+          CMAKE_ARGS_1: -DREMOTERY_BUILD_SHARED_LIBS=ON
+          
+        run:  |
+              mkdir -p $OUT_DIR
+              if [ "$RUNNER_OS" == "Windows" ]; then
+                ./build-native.cmd ${{ matrix.args }} $MODULE_ARGS_1 --out-dir $OUT_DIR --cmake-args "${{ matrix.cmake_args }}"
+              else
+                ./build-native.sh  ${{ matrix.args }} $MODULE_ARGS_1 --out-dir $OUT_DIR --cmake-args "${{ matrix.cmake_args }}"
+              fi
+        shell: bash
+        
+      - name: List $RUNNER_WORKSPACE
+        if: always() && vars.ACTIONS_STEP_DEBUG
+        run: find $RUNNER_WORKSPACE
+        shell: bash
+
+      - name: Upload native library artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.build_target }}
+          path: ${{ env.OUT_DIR }}/
+          if-no-files-found: error
+
+
+  managed_build:
+    runs-on: windows-latest
+    needs: native_builds
+    if: never()
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: ${{ env.OUT_DIR }}/
+          
+      - name: List $RUNNER_WORKSPACE
+        if: ${{ vars.ACTIONS_STEP_DEBUG }}
+        run: find $RUNNER_WORKSPACE
+        shell: bash
+        
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+      
+      - name: Restore
+        run: dotnet restore
+        
+      - name: Build
+        run: dotnet build -c Release --no-restore 
+        
+      - name: Test
+        run: dotnet test -c Release --no-restore --no-build
+       
+      - name: Pack
+        run: dotnet pack -c Release --no-restore --verbosity normal
+
+      - name: Upload NuGet artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: nuget_package
+          path: artifacts/pkg/Release/*.nupkg
+          if-no-files-found: error
+
+      - name: NuGet Push 
+        if: startsWith(github.ref, 'refs/tags/')
+        working-directory: artifacts/pkg/Release
+        run: dotnet nuget push "*.nupkg" --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_TOKEN }} --skip-duplicate
+
