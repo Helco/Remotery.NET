@@ -11,6 +11,7 @@ set _NDK_DIR=
 set _ANDROID_ABI=arm64-v8a
 set _OS_DIR=
 set _ANDROID_PLATFORM=android-16
+set _CMAKE_TOOLCHAIN=
 
 :ArgLoop
 if [%1] == [] goto LocateVS
@@ -25,6 +26,7 @@ if /i [%1] == [--android-ndk] (set _NDK_DIR=%2&& shift && shift & goto ArgLoop)
 if /i [%1] == [--android-abi] (set _ANDROID_ABI=%2&& set _BUILD_ARCH=%2&& shift && shift & goto ArgLoop)
 if /i [%1] == [--submodule] (set _SUBMODULE=%2&& shift && shift & goto ArgLoop)
 if /i [%1] == [--android-platform] (set _ANDROID_PLATFORM=%2&& shift && shift & goto ArgLoop)
+if /i [%1] == [--cmake-toolchain] (set _CMAKE_TOOLCHAIN="-DCMAKE_TOOLCHAIN_FILE=%2" && shift && shift & goto ArgLoop)
 shift
 goto ArgLoop
 
@@ -45,8 +47,8 @@ If NOT exist "%_BUILD_DIR%" (
   mkdir %_BUILD_DIR%
 )
 pushd %_BUILD_DIR%
-echo ..\..\ -DCMAKE_BUILD_TYPE=%_CMAKE_BUILD_TYPE% %_CMAKE_ARGS% %_CMAKE_PLATFORM_ARGS% 
-cmake ..\..\ -DCMAKE_BUILD_TYPE=%_CMAKE_BUILD_TYPE% %_CMAKE_ARGS%=ON %_CMAKE_PLATFORM_ARGS% 
+echo ..\..\ -DCMAKE_BUILD_TYPE=%_CMAKE_BUILD_TYPE% %_CMAKE_ARGS%=ON %_CMAKE_TOOLCHAIN% %_CMAKE_PLATFORM_ARGS% 
+cmake ..\..\ -DCMAKE_BUILD_TYPE=%_CMAKE_BUILD_TYPE% %_CMAKE_ARGS%=ON %_CMAKE_TOOLCHAIN% %_CMAKE_PLATFORM_ARGS% 
 cmake --build . --config %_CMAKE_BUILD_TYPE%
 popd
 

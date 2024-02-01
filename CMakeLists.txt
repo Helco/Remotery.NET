@@ -1,4 +1,12 @@
 cmake_minimum_required(VERSION 3.16)
+if (NOT "${CMAKE_TOOLCHAIN_FILE}" STREQUAL "")
+    set(VCPKG_CHAINLOAD_TOOLCHAIN_FILE "${CMAKE_TOOLCHAIN_FILE}")
+endif()
+if ("$ENV{VCPKG_INSTALLATION_ROOT}" STREQUAL "")
+    message(FATAL_ERROR "VCPKG_INSTALLATION_ROOT is not set")
+    return()
+endif()
+set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake")
 
 project(remotery)
 
@@ -71,7 +79,16 @@ macro(remotery_create_target target_name linkage output_name)
         target_compile_definitions(${target_name} PUBLIC RMT_STATIC_LIB)
     endif()
 
+    if (MSVC)
+        target_compile_definitions(${target_name} PUBLIC RMT_USE_D3D12=1 RMT_USE_D3D11=1)
+        target_link_libraries(${target_name} PRIVATE "dxguid.lib")
+    elseif (APPLE)
+        # target_compile_definitions(${target_name} PUBLIC RMT_USE_METAL=1)
+    endif()
 
+    find_package(VulkanHeaders CONFIG REQUIRED)
+    target_link_libraries(${target_name} PRIVATE Vulkan::Headers)
+    target_compile_definitions(${target_name} PUBLIC RMT_USE_OPENGL=1 RMT_USE_VULKAN=1)
 
 endmacro()
 
