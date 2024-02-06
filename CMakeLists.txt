@@ -8,7 +8,11 @@ if ("$ENV{VCPKG_INSTALLATION_ROOT}" STREQUAL "")
 endif()
 set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake")
 
-project(remotery C OBJCXX)
+if(APPLE)
+    project(remotery C OBJCXX)
+else()
+    project(remotery C)
+endif()
 
 # By default, we build in Release mode.
 if(NOT CMAKE_BUILD_TYPE)
