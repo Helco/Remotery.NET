@@ -19,10 +19,10 @@ jobs:
             args:     win-x64 --artifact-name build/remotery/Release/remotery.dll
             cmake_args: $CMAKE_ARGS_1
             
-          - os: windows-latest
-            build_target: win-x86
-            args:     win-x86 --artifact-name build/remotery/Release/remotery.dll
-            cmake_args: $CMAKE_ARGS_1
+          #- os: windows-latest
+          #  build_target: win-x86
+          #  args:     win-x86 --artifact-name build/remotery/Release/remotery.dll
+          #  cmake_args: $CMAKE_ARGS_1
             
           #- os: windows-latest
           #  build_target: win-arm64

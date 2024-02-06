@@ -11,7 +11,6 @@
         <Content Include="$(NativeAssetsPath)/linux-x64/libspirv-cross-c-shared.so" PackagePath="runtimes/linux-x64/native" />
         <Content Include="$(NativeAssetsPath)/linux-arm64/libspirv-cross-c-shared.so" PackagePath="runtimes/linux-arm64/native" />
 
-        <Content Include="$(NativeAssetsPath)/win-x86/spirv-cross-c-shared.dll" PackagePath="runtimes/win-x86/native" />
         <Content Include="$(NativeAssetsPath)/win-x64/spirv-cross-c-shared.dll" PackagePath="runtimes/win-x64/native" />
 
         <Content Include="$(NativeAssetsPath)/ios-arm64/libspirv-cross_combined.a" PackagePath="runtimes/ios-arm64/native" />
@@ -23,5 +22,6 @@
     <!-- Disabled because CI does not work for these platforms yet
     <Content Include="$(NativeAssetsPath)/win-arm64/spirv-cross-c-shared.dll" PackagePath="runtimes/win-arm64/native" />
     <Content Include="$(NativeAssetsPath)/android-armeabi-v7a/libspirv-cross-c-shared.so" PackagePath="runtimes/android-arm/native" />
+    <Content Include="$(NativeAssetsPath)/win-x86/spirv-cross-c-shared.dll" PackagePath="runtimes/win-x86/native" />
     -->
 </Project>
