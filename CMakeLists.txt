@@ -8,7 +8,7 @@ if ("$ENV{VCPKG_INSTALLATION_ROOT}" STREQUAL "")
 endif()
 set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_INSTALLATION_ROOT}/scripts/buildsystems/vcpkg.cmake")
 
-project(remotery)
+project(remotery C OBJCXX)
 
 # By default, we build in Release mode.
 if(NOT CMAKE_BUILD_TYPE)
@@ -43,6 +43,8 @@ macro(remotery_create_target target_name linkage output_name)
         ${target_name} ${linkage_upper}
         Remotery/lib/Remotery.c
         Remotery/lib/Remotery.h
+        sources/RemoteryCustom/RemoteryCustom.h
+        sources/RemoteryCustom/RemoteryCustom.c
     )
 
     target_include_directories(
@@ -69,21 +71,26 @@ macro(remotery_create_target target_name linkage output_name)
             # TODO: remove "/W4"-emitted warnings and use "/WX"
             # /WX
         )
+        target_compile_definitions(${target_name} PUBLIC RMT_USE_D3D12=1 RMT_USE_D3D11=1)
+        target_link_libraries(${target_name} PRIVATE "dxguid.lib")
     else()
         target_compile_options(
             ${target_name} PUBLIC -pthread -Wall -Wextra -Wno-unused-parameter -Wno-unused-function -Wno-unused-variable -Wno-unused-but-set-variable
         )
     endif()
 
-    if(${linkage_upper} STREQUAL "STATIC")
-        target_compile_definitions(${target_name} PUBLIC RMT_STATIC_LIB)
+    if (APPLE)
+        target_compile_definitions(${target_name} PUBLIC RMT_USE_METAL=1)
+        add_library(${target_name}_objc STATIC
+            Remotery/lib/RemoteryMetal.mm)
+        set_target_properties(${target_name}_objc PROPERTIES LINKER_LANGUAGE OBJCXX)
+        target_link_libraries(${target_name}_objc
+            "-framework Foundation")
+        target_link_libraries(${target_name} PUBLIC ${target_name}_objc)
     endif()
 
-    if (MSVC)
-        target_compile_definitions(${target_name} PUBLIC RMT_USE_D3D12=1 RMT_USE_D3D11=1)
-        target_link_libraries(${target_name} PRIVATE "dxguid.lib")
-    elseif (APPLE)
-        # target_compile_definitions(${target_name} PUBLIC RMT_USE_METAL=1)
+    if(${linkage_upper} STREQUAL "STATIC")
+        target_compile_definitions(${target_name} PUBLIC RMT_STATIC_LIB)
     endif()
 
     find_package(VulkanHeaders CONFIG REQUIRED)
