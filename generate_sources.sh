@@ -4,4 +4,5 @@
 ClangSharpPInvokeGenerator \
     --file-directory Remotery/lib \
     --include-directory Remotery/lib \
+    --include-directory sources/RemoteryCustom \
     "@scripts/GenerateRemotery.rsp"

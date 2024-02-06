@@ -2,7 +2,6 @@
 default-codegen
 generate-doc-includes
 generate-file-scoped-namespaces
-generate-macro-bindings
 generate-tests-nunit
 multi-file
 unix-types

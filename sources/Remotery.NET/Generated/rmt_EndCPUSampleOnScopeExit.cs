@@ -5,6 +5,6 @@ public partial struct rmt_EndCPUSampleOnScopeExit
 {
     public void Dispose()
     {
-        _rmt_EndCPUSample();
+        EndCPUSample();
     }
 }

@@ -14,6 +14,32 @@ remotery
 
 --file
 Remotery.h
+../../sources/RemoteryCustom/RemoteryCustom.h
 
 --methodClassName
 RemoteryPInvoke
+
+--prefixStrip
+_rmt_
+
+--remap
+rmt_GetLastErrorMessage=GetLastErrorMessage
+
+--define-macro
+RMT_USE_CUDA=1
+RMT_USE_D3D11=1
+RMT_USE_D3D12=1
+RMT_USE_OPENGL=1
+RMT_USE_VULKAN=1
+RMT_USE_METAL=1
+
+--exclude
+RMT_ENABLED
+RMT_ASSUME_LITTLE_ENDIAN
+RMT_USE_TINYCRT
+RMT_USE_POSIX_THREADNAMES
+RMT_GPU_CPU_SYNC_NUM_ITERATIONS
+RMT_GPU_CPU_SYNC_SECONDS
+RMT_D3D11_RESYNC_ON_DISJOINT
+RMT_USE_INTERNAL_HASH_FUNCTION
+RMT_USE_LEGACY_ATOMICS
