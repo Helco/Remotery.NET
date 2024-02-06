@@ -99,7 +99,7 @@ macro(remotery_create_target target_name linkage output_name)
 
     find_package(VulkanHeaders CONFIG REQUIRED)
     target_link_libraries(${target_name} PRIVATE Vulkan::Headers)
-    target_compile_definitions(${target_name} PUBLIC RMT_USE_OPENGL=1 RMT_USE_VULKAN=1)
+    target_compile_definitions(${target_name} PUBLIC RMT_USE_VULKAN=1)
 
 endmacro()
 
