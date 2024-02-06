@@ -1,5 +1,8 @@
 @scripts/GenerateBase.rsp
 
+--language
+c
+
 --output
 ./sources/Remotery.NET/Generated
 
@@ -43,3 +46,10 @@ RMT_GPU_CPU_SYNC_SECONDS
 RMT_D3D11_RESYNC_ON_DISJOINT
 RMT_USE_INTERNAL_HASH_FUNCTION
 RMT_USE_LEGACY_ATOMICS
+rmt_EndCPUSampleOnScopeExit
+rmt_EndCUDASampleOnScopeExit
+rmt_EndD3D11SampleOnScopeExit
+rmt_EndD3D12SampleOnScopeExit
+rmt_EndOpenGLSampleOnScopeExit
+rmt_EndMetalSampleOnScopeExit
+rmt_EndVulkanSampleOnEscopeExit

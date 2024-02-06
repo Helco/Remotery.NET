@@ -30,34 +30,6 @@ public static unsafe partial class RemoteryPInvoke
     [return: NativeTypeName("rmtU32")]
     public static extern uint HashString32([NativeTypeName("const char *")] sbyte* s, int len, [NativeTypeName("rmtU32")] uint seed);
 
-    /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.EndCPUSample"]/*' />
-    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "_rmt_EndCPUSample", ExactSpelling = true)]
-    public static extern void EndCPUSample();
-
-    /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.EndCUDASample"]/*' />
-    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "_rmt_EndCUDASample", ExactSpelling = true)]
-    public static extern void EndCUDASample(void* stream);
-
-    /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.EndD3D11Sample"]/*' />
-    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "_rmt_EndD3D11Sample", ExactSpelling = true)]
-    public static extern void EndD3D11Sample();
-
-    /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.EndD3D12Sample"]/*' />
-    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "_rmt_EndD3D12Sample", ExactSpelling = true)]
-    public static extern void EndD3D12Sample();
-
-    /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.EndOpenGLSample"]/*' />
-    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "_rmt_EndOpenGLSample", ExactSpelling = true)]
-    public static extern void EndOpenGLSample();
-
-    /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.EndMetalSample"]/*' />
-    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "_rmt_EndMetalSample", ExactSpelling = true)]
-    public static extern void EndMetalSample();
-
-    /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.EndVulkanSample"]/*' />
-    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "_rmt_EndVulkanSample", ExactSpelling = true)]
-    public static extern void EndVulkanSample();
-
     /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.Settings"]/*' />
     [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "_rmt_Settings", ExactSpelling = true)]
     public static extern rmtSettings* Settings();
@@ -273,27 +245,27 @@ public static unsafe partial class RemoteryPInvoke
     public static extern rmtPropertyValue PropertyGetValue(rmtProperty* property);
 
     /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.rmtnet_useCUDA"]/*' />
-    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "__Z14rmtnet_useCUDAv", ExactSpelling = true)]
+    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
     [return: NativeTypeName("rmtBool")]
     public static extern uint rmtnet_useCUDA();
 
     /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.rmtnet_useD3D11"]/*' />
-    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "__Z15rmtnet_useD3D11v", ExactSpelling = true)]
+    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
     [return: NativeTypeName("rmtBool")]
     public static extern uint rmtnet_useD3D11();
 
     /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.rmtnet_useOpenGL"]/*' />
-    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "__Z16rmtnet_useOpenGLv", ExactSpelling = true)]
+    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
     [return: NativeTypeName("rmtBool")]
     public static extern uint rmtnet_useOpenGL();
 
     /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.rmtnet_useMetal"]/*' />
-    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "__Z15rmtnet_useMetalv", ExactSpelling = true)]
+    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
     [return: NativeTypeName("rmtBool")]
     public static extern uint rmtnet_useMetal();
 
     /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.rmtnet_useVulkan"]/*' />
-    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "__Z16rmtnet_useVulkanv", ExactSpelling = true)]
+    [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, ExactSpelling = true)]
     [return: NativeTypeName("rmtBool")]
     public static extern uint rmtnet_useVulkan();
 }

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TargetFramework>net8.0</TargetFramework>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <VSTestLogger>trx</VSTestLogger>
+        <VSTestResultsDirectory>$(BaseArtifactsPath)tst/$(Configuration)/</VSTestResultsDirectory>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" IsImplicitlyDefined="true" PrivateAssets="all" />
+        <PackageReference Include="NUnit" IsImplicitlyDefined="true" PrivateAssets="all" />
+        <PackageReference Include="NUnit3TestAdapter" IsImplicitlyDefined="true" PrivateAssets="all" />
+        <ProjectReference Include="../../sources/Remotery.NET/Remotery.NET.csproj" />
+    </ItemGroup>
+</Project>
