@@ -2,60 +2,43 @@ using System;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using RemoteryNET;
+using RemoteryNET.Pretty;
 using static RemoteryNET.RemoteryPInvoke;
-
-unsafe ref struct SByteString
-{
-    private ReadOnlySpan<byte> span;
-    private sbyte* ptr;
-
-    public SByteString(ReadOnlySpan<byte> span)
-    {
-        this.span = span;
-        fixed (byte* bytePtr = span)
-            ptr = (sbyte*)bytePtr;
-    }
-
-    public static implicit operator sbyte*(SByteString str) => str.ptr;
-}
 
 public static unsafe class Sample
 {
+    private static CPUSample aggregateSample = new("aggregate"u8, rmtSampleFlags.RMTSF_Aggregate);
     private static void aggregateFunction()
     {
-        BeginCPUSample(new SByteString("aggregate"u8), (uint)rmtSampleFlags.RMTSF_Aggregate, null);
-        EndCPUSample();
+        using var _ = aggregateSample.Begin();
     }
 
+    private static CPUSample recursiveSample = new("recursive"u8, rmtSampleFlags.RMTSF_Recursive);
     private static void recursiveFunction(int depth)
     {
-        BeginCPUSample(new SByteString("recursive"u8), (uint)rmtSampleFlags.RMTSF_Recursive, null);
+        using var _ = recursiveSample.Begin();
         if (depth < 5)
             recursiveFunction(depth + 1);
-        EndCPUSample();
     }
 
+    private static CPUSample delaySample = new("delay"u8);
     private static double delay()
     {
         var random = Random.Shared;
 
-        BeginCPUSample(new SByteString("delay"u8), 0, null);
+        using var _ = delaySample.Begin();
         double j = 0;
-        for (int i = 0, end = random.Next(65500); i < end; i++)
+        for (int i = 0, end = random.Next(655); i < end; i++)
             j += Math.Sin(i);
         recursiveFunction(0);
         aggregateFunction();
         aggregateFunction();
         aggregateFunction();
-        EndCPUSample();
         return j;
     }
     
     public static void Main(string[] args)
     {
-        var settings = RemoteryPInvoke.Settings();
-        settings->reuse_open_port = 1;
-
         RemoteryInstance* rmt;
         rmtError error;
         error = CreateGlobalInstance(&rmt);
@@ -66,10 +49,9 @@ public static unsafe class Sample
         Console.CancelKeyPress += (_0, _1) => keepRunning = false;
         while(keepRunning)
         {
-            LogText(new SByteString("start profiling"u8));
+            //LogText(new SByteString("start profiling"u8));
             delay();
-            LogText(new SByteString("end profiling"u8));
-            MarkFrame();
+            //LogText(new SByteString("end profiling"u8));
         }
 
         DestroyGlobalInstance(rmt);

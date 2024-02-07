@@ -37,19 +37,20 @@ public static unsafe partial class RemoteryPInvoke
     /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.CreateGlobalInstance"]/*' />
     [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "_rmt_CreateGlobalInstance", ExactSpelling = true)]
     [return: NativeTypeName("enum rmtError")]
-    public static extern rmtError CreateGlobalInstance(Remotery** remotery);
+    public static extern rmtError CreateGlobalInstance([NativeTypeName("Remotery **")] RemoteryInstance** remotery);
 
     /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.DestroyGlobalInstance"]/*' />
     [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "_rmt_DestroyGlobalInstance", ExactSpelling = true)]
-    public static extern void DestroyGlobalInstance(Remotery* remotery);
+    public static extern void DestroyGlobalInstance([NativeTypeName("Remotery *")] RemoteryInstance* remotery);
 
     /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.SetGlobalInstance"]/*' />
     [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "_rmt_SetGlobalInstance", ExactSpelling = true)]
-    public static extern void SetGlobalInstance(Remotery* remotery);
+    public static extern void SetGlobalInstance([NativeTypeName("Remotery *")] RemoteryInstance* remotery);
 
     /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.GetGlobalInstance"]/*' />
     [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "_rmt_GetGlobalInstance", ExactSpelling = true)]
-    public static extern Remotery* GetGlobalInstance();
+    [return: NativeTypeName("Remotery *")]
+    public static extern RemoteryInstance* GetGlobalInstance();
 
     /// <include file='RemoteryPInvoke.xml' path='doc/member[@name="RemoteryPInvoke.SetCurrentThreadName"]/*' />
     [DllImport("remotery", CallingConvention = CallingConvention.Cdecl, EntryPoint = "_rmt_SetCurrentThreadName", ExactSpelling = true)]

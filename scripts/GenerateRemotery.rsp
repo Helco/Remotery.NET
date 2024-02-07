@@ -27,6 +27,7 @@ _rmt_
 
 --remap
 rmt_GetLastErrorMessage=GetLastErrorMessage
+Remotery=RemoteryInstance
 
 --define-macro
 RMT_USE_CUDA=1
