@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.SDK">
+    <PropertyGroup>
+        <OutputType>exe</OutputType>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <TargetFramework>net8.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="../../sources/Remotery.NET/Remotery.NET.csproj"/>
+    </ItemGroup>
+</Project>
