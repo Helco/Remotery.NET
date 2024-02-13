@@ -36,7 +36,7 @@
         <TfmSpecificPackageFile Include="_._" PackagePath="lib/$(TargetFramework)/_._" Pack="true" />
             
         <Content Include="@(_NativeLibrary->'%(MyFullPath)')">
-            <PackagePath>runtimes/%(OutputDir)/%(LibraryName)</PackagePath>
+            <PackagePath>runtimes/%(OutputDir)/native/%(LibraryName)</PackagePath>
             <CopyToOutputDirectory Condition="Exists('%(MyFullPath)')">PreserveNewest</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
