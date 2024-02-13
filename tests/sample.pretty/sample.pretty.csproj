@@ -3,6 +3,7 @@
         <OutputType>exe</OutputType>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
         <TargetFramework>net8.0</TargetFramework>
+        <IsPackable>false</IsPackable>
     </PropertyGroup>
 
     <ItemGroup>

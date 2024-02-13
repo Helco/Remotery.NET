@@ -16,6 +16,7 @@
         <BaseArtifactsPath>$(RepositoryRootDirectory)artifacts/</BaseArtifactsPath>
         <BaseArtifactsPathSuffix>$(SpirzzaProjectCategory)/$(MSBuildProjectName)</BaseArtifactsPathSuffix>
         <RepositoryUrl>https://github.com/Helco/Remotery.NET</RepositoryUrl>
+        <RepositoryType>git</RepositoryType>
     </PropertyGroup>
 
     <!-- Default settings that explicitly differ from the Sdk.props defaults  -->
@@ -43,8 +44,6 @@
         <Product>Remotery.NET</Product>
         <RootNamespace>RemoteryNET</RootNamespace>
         <VersionPrefix>0.0.1</VersionPrefix>
-        <VersionSuffix Condition="'$(EXCLUDE_SUFFIX_FROM_VERSION)' != 'true'">beta</VersionSuffix>
-        <VersionSuffix Condition="'$(GITHUB_EVENT_NAME)' == 'pull_request'">pr</VersionSuffix>
     </PropertyGroup>
 
     <!-- Default settings that are otherwise undefined -->
@@ -68,5 +67,19 @@
         <NativeAssetsPath>$(RepositoryRootDirectory)/artifacts/natives</NativeAssetsPath>
         <PolySharpIncludeRuntimeSupportedAttributes>true</PolySharpIncludeRuntimeSupportedAttributes>
     </PropertyGroup>
+
+    <Target Name="GitVersion" />
+    <ItemGroup>
+        <PackageReference Include="GitInfo" Version="3.3.3" PrivateAssets="all"/>
+    </ItemGroup>
+
+    <Target Name="PopulateRepositoryInfo" DependsOnTargets="GitVersion" BeforeTargets="GetAssemblyVersion;GenerateNuspec;GetPackageContents">
+        <PropertyGroup>
+            <RepositoryBranch>$(GitBranch)</RepositoryBranch>
+            <RepositoryCommit>$(GitCommit)</RepositoryCommit>
+            <VersionSuffix Condition="'$(VersionSuffix)' == ''">$(GitCommit)</VersionSuffix>
+            <VersionSuffix Condition="'$(VersionSuffix)' != ''">$(GitCommit)-$(VersionSuffix)</VersionSuffix>
+        </PropertyGroup>
+    </Target>
 
 </Project>
